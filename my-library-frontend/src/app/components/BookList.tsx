@@ -2,21 +2,25 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BookItem from "./BookItem";
 
-type Book = {
+interface Book {
   id: string;
   title: string;
   author: string;
   releaseDate: number;
   bookType: string;
-};
+}
 
-const BookList: React.FC = () => {
-  const [books, setBooks] = useState<Book[]>([]);
+interface BookListProps {
+  books: Book[];
+}
+
+const BookList: React.FC<BookListProps> = ({ books }) => {
+  const [booksData, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/books");
+        const response = await axios.get("http://localhost:3000/books");
         setBooks(response.data);
       } catch (error) {
         console.error("Error fetching books:", error);
@@ -28,15 +32,14 @@ const BookList: React.FC = () => {
 
   return (
     <div>
-      {books.map((book) => (
-        <BookItem
-          key={book.id}
-          title={book.title}
-          author={book.author}
-          releaseDate={book.releaseDate}
-          bookType={book.bookType}
-        />
-      ))}
+      <h2>Book List</h2>
+      <ul>
+        {booksData.map((book) => (
+          <li key={book.id}>
+            <BookItem book={book} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
