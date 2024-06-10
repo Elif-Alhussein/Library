@@ -13,6 +13,7 @@ export class BooksService {
         data: createBookDto,
       });
     } catch (error) {
+      console.error('Error creating book with data:', createBookDto);
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         // Handle specific Prisma errors (e.g., unique constraint violation)
         if (error.code === 'P2002') {
@@ -30,7 +31,9 @@ export class BooksService {
 
   async findAll() {
     try {
-      return await this.prisma.book.findMany();
+      const books = await this.prisma.book.findMany();
+      console.log('Retrieved books:', books);
+      return books;
     } catch (error) {
       console.error('Error fetching books:', error);
       throw new HttpException(
