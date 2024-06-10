@@ -1,24 +1,22 @@
 import React from 'react';
 
-interface BookItemProps {
-    book: {
-        id: string;
-        title: string;
-        author: string;
-        bookType: string;
-        releaseDate: number;
-    };
-}
+type BookItemProps = {
+  title: string;
+  author: string;
+  releaseDate: number;
+  bookType: string;
+};
 
-const BookItem: React.FC<BookItemProps> = ({ book }) => {
-    return (
-        <div>
-            <h3>{book.title}</h3>
-            <p>By: {book.author}</p>
-            <p>Type: {book.bookType}</p>
-            <p>Release Date: {book.releaseDate}</p>
-        </div>
-    );
+const BookItem: React.FC<BookItemProps> = ({ title, author, releaseDate, bookType }) => {
+  return (
+    <div className="p-4 border-b border-gray-200">
+      <h2 className="text-xl font-semibold">{title}</h2>
+      <p>Author: {author}</p>
+      <p>Release Date: {releaseDate}</p>
+      <p>Type: {bookType}</p>
+    </div>
+  );
 };
 
 export default BookItem;
+

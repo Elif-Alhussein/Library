@@ -13,6 +13,8 @@ export class BooksService {
   }
 
   async findAll() {
-    return this.prisma.book.findMany();
+    const books = await this.prisma.book.findMany();
+    console.log('Retrieved books:', books);
+    return books;
   }
 }
