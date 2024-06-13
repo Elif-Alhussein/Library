@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const AddBookForm: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [releaseDate, setReleaseDate] = useState('');
-  const [bookType, setBookType] = useState('');
+interface AddBookFormProps {
+  onBookAdded: () => void;
+}
+
+const AddBookForm: React.FC<AddBookFormProps> = ({ onBookAdded }) => {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [releaseDate, setReleaseDate] = useState("");
+  const [bookType, setBookType] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      await axios.post('http://localhost:3000/books', {
+      await axios.post("/api/books", {
         title,
         author,
         releaseDate: parseInt(releaseDate, 10),
@@ -19,14 +24,20 @@ const AddBookForm: React.FC = () => {
       });
 
       // Clear form fields
-      setTitle('');
-      setAuthor('');
-      setReleaseDate('');
-      setBookType('');
+      setTitle("");
+      setAuthor("");
+      setReleaseDate("");
+      setBookType("");
+
+      onBookAdded();
     } catch (error) {
-      console.error('Error adding book:', error);
+      console.error("Error adding book:", error);
     }
   };
+
+  useEffect(() => {
+    console.warn("Title => ", title);
+  }, [title]);
 
   return (
     <form onSubmit={handleSubmit} className="p-4">
@@ -34,14 +45,14 @@ const AddBookForm: React.FC = () => {
         <label className="block text-sm font-medium text-gray-700">Title</label>
         <input
           type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
           className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
           required
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Author</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Author
+        </label>
         <input
           type="text"
           value={author}
@@ -51,7 +62,9 @@ const AddBookForm: React.FC = () => {
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Release Date</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Release Date
+        </label>
         <input
           type="number"
           value={releaseDate}
@@ -61,7 +74,9 @@ const AddBookForm: React.FC = () => {
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Book Type</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Book Type
+        </label>
         <input
           type="text"
           value={bookType}
@@ -70,12 +85,14 @@ const AddBookForm: React.FC = () => {
           required
         />
       </div>
-      <button
-        type="submit"
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
-      >
-        Add Book
-      </button>
+      <div>
+        <button
+          type="submit"
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+        >
+          Add Book
+        </button>
+      </div>
     </form>
   );
 };
